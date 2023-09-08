@@ -1,0 +1,19 @@
+/* :root{
+
+} */
+.tasks{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.task{
+     display: flex;
+     flex-direction: column;
+     background: indigo;
+     border-radius: 8px;
+     display: flex;
+     gap: 25px;   
+     color: #fff;
+     justify-content: center;
+     align-items: center;
+}
