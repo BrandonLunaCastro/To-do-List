@@ -1,19 +1,45 @@
 /* :root{
 
 } */
-.tasks{
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+*,
+::after,
+::before {
+  padding: 0;
+  margin: 0;
 }
-.task{
-     display: flex;
-     flex-direction: column;
-     background: indigo;
-     border-radius: 8px;
-     display: flex;
-     gap: 25px;   
-     color: #fff;
-     justify-content: center;
-     align-items: center;
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  margin-top: 2rem;
+}
+.task {
+  display: flex;
+  flex-direction: column;
+  background: indigo;
+  border-radius: 8px;
+  width: 500px;
+  display: flex;
+  gap: 25px;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+}
+.main__task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: inherit;
+}
+.main__task > * {
+  padding: 10px;
+}
+.main__task > i {
+  display: inherit;
+  justify-content: end;
+}
+.display__none{
+    display: none;
 }
