@@ -35,45 +35,67 @@ function insertTask(data) {
   const figure = document.createElement("figure"),
     div = document.createElement("div"),
     div2 = document.createElement("div"),
-    p1 = document.createElement("p"),
+    div3 = document.createElement("div"),
     span1 = document.createElement("span"),
     span2 = document.createElement("span"),
     span3 = document.createElement("span"),
+    span4 = document.createElement("span"),
     fragment = document.createDocumentFragment(),
     i = document.createElement("i"),
-    inputCheckbox = document.createElement("input");
+    inputCheckbox = document.createElement("input"),
+    mainTitle = document.createElement("span");
 
   inputCheckbox.type = "checkbox";
   inputCheckbox.name = "checkbox";
-  inputCheckbox.id = "checkbox"  
+  inputCheckbox.id = "checkbox";
 
-  i.className = "fa-regular fa-pen-to-square"
+  i.className = "edit fa-regular fa-pen-to-square";
+  mainTitle.innerText = title
+  span1.innerHTML = `<b>Title:</b> ${title} `
+  span2.innerHTML = `<b>Due date:</b> ${dueDate}`
+  span3.innerHTML = `<b>Description:</b> ${description}`
+  span4.innerHTML = `<b>Priority:</b> ${priority}`
 
+  figure.appendChild(div);
+  figure.appendChild(div2);
+  figure.classList.add("task")
 
-  p1.classList.add("title");
-  p1.innerText = title;
+  div3.appendChild(inputCheckbox);
+  div3.appendChild(mainTitle);
 
-  p2.classList.add("dueDate");
-  p2.innerText = dueDate;
+  div.appendChild(div3);
+  div.appendChild(i);
+  div.classList.add("main__task");
 
-  p3.classList.add("description");
-  p3.innerText = description;
+  div2.appendChild(span1);
+  div2.appendChild(span2);
+  div2.appendChild(span3);
+  div2.appendChild(span4);
+  div2.classList.add("more__info")
+  div2.classList.add("display__none")
 
-  p4.classList.add("priority");
-  p4.innerText = priority;  
-
-  figure.appendChild(div)
-  figure.appendChild(div2)
-
-  div.appendChild(inputCheckbox)
-  div.appendChild(p1)
-  div.appendChild(i)
-
-  div2.appendChild()
-  div2.appendChild()
 
   fragment.appendChild(figure);
   sectionTasks.appendChild(fragment);
+
+  showProperties()
 }
 
-export { clickBtnTask, clickBtnAdd };
+
+const showMore = (e) => {
+    if(e.target.matches(".edit") || e.target.matches("#checkbox"))return
+    const divParent = e.currentTarget
+   
+    divParent.nextElementSibling.classList.toggle("display__none")
+
+}
+
+function showProperties(){
+   const infoTasks = document.querySelectorAll(".main__task")
+   console.log(infoTasks)
+    infoTasks.forEach((task)=>{
+        task.addEventListener("click",showMore)
+    })
+}
+
+export { clickBtnTask, clickBtnAdd, showProperties};
