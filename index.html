@@ -30,16 +30,37 @@
                     </select>
                     <button type="submit" id="add">Add+</button>
                 </form>
-            </dialog>    
+            </dialog> 
+            <dialog class="edit__modal">
+                <form class="form__edit">
+                    <legend>Edit Task</legend>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title">
+                    <label for="date">Due Date</label>
+                    <input type="date" name="dueDate" id="dueDate">
+                    <label for="descripion">Description</label>
+                    <textarea name="description" id="descripion" cols="6" rows="1"></textarea>
+                    <label for="priority">Priority</label>
+                    <select id="priority" name="priority">
+                        <option value="hight">Hight</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                    <button type="submit" id="add">Confirm edit</button>
+                </form>
+            </dialog>   
         </article>
         <article class="tasks">
-            <article class="task">
+            <figure class="task">
                 <div class="main__task">
                     <div>
                         <input type="checkbox" name="checkbox" id="checkbox">
                         <span>GYM</span>
                     </div>
-                    <i class="edit fa-regular fa-pen-to-square"></i>
+                    <div>
+                        <i class="edit fa-regular fa-pen-to-square"></i>
+                        <i class="delete fa-solid fa-trash-can"></i>
+                    </div>
                 </div>
                 <div class="more__info display__none">
                     <span>Title: gym</span>
@@ -47,7 +68,7 @@
                     <span>Description : gym whit bros</span>
                     <span>Priority : medium</span>
                 </div>
-            </article>
+            </figure>
         </article>
     </main>
     
