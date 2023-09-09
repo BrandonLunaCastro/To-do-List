@@ -2,8 +2,8 @@ import Task from "./logic.js";
 
 //function that activates modal window
 const openModal = (e) => {
-  const dialog = document.querySelector(".modal");
-  dialog.showModal();
+  if(e.currentTarget.matches("#addTask"))document.querySelector(".modal").showModal();
+  if(e.currentTarget.matches(".edit"))document.querySelector(".edit__modal").showModal();
 };
 function clickBtnTask() {
   const btnAddTask = document.getElementById("addTask");
@@ -18,8 +18,15 @@ const submitTask = (e) => {
   document.querySelector(".modal").close();
   e.currentTarget.reset();
 };
-function clickBtnAdd() {
+
+const editTask = (e) => {
+
+}
+
+
+function clickBtnModal() {
   document.querySelector(".form").addEventListener("submit", submitTask);
+  document.querySelector(".form__edit").addEventListener("submit",editTask)
 }
 
 //this function generate instance of class task
@@ -27,67 +34,46 @@ function createTask(title, dueDate, description, priority) {
   const newTask = new Task(title, dueDate, description, priority);
   const dataInfo = newTask.getData;
   insertTask(dataInfo);
+  clickEdit()
 }
 //this function insert task to DOM
 function insertTask(data) {
   let { title, dueDate, description, priority } = data;
-  const sectionTasks = document.querySelector(".tasks");
-  const figure = document.createElement("figure"),
-    div = document.createElement("div"),
-    div2 = document.createElement("div"),
-    div3 = document.createElement("div"),
-    span1 = document.createElement("span"),
-    span2 = document.createElement("span"),
-    span3 = document.createElement("span"),
-    span4 = document.createElement("span"),
-    fragment = document.createDocumentFragment(),
-    i = document.createElement("i"),
-    inputCheckbox = document.createElement("input"),
-    mainTitle = document.createElement("span");
+  const sectionTasks = document.querySelector(".tasks"),
+    figure = document.createElement("figure"),
+    fragment = document.createDocumentFragment()
 
-  inputCheckbox.type = "checkbox";
-  inputCheckbox.name = "checkbox";
-  inputCheckbox.id = "checkbox";
+   figure.classList.add("task")
+   figure.innerHTML = `  
+        <div class="main__task">
+          <div>
+            <input type="checkbox" name="checkbox" id="checkbox">
+            <span>${title}</span>
+          </div>
+          <div>
+            <i class="edit fa-regular fa-pen-to-square"></i>
+            <i class="delete fa-solid fa-trash-can"></i>
+          </div>
+        </div>
+        <div class="more__info display__none">
+          <span><b>Title:</b>${title}</span>
+          <span><b>Due Date:</b>${dueDate}</span>
+          <span><b>Description:</b>${description}</span>
+          <span><b>Priority:</b>${priority}</span>
+        </div>
+      </div>
+  `;
 
-  i.className = "edit fa-regular fa-pen-to-square";
-  mainTitle.innerText = title
-  span1.innerHTML = `<b>Title:</b> ${title} `
-  span2.innerHTML = `<b>Due date:</b> ${dueDate}`
-  span3.innerHTML = `<b>Description:</b> ${description}`
-  span4.innerHTML = `<b>Priority:</b> ${priority}`
-
-  figure.appendChild(div);
-  figure.appendChild(div2);
-  figure.classList.add("task")
-
-  div3.appendChild(inputCheckbox);
-  div3.appendChild(mainTitle);
-
-  div.appendChild(div3);
-  div.appendChild(i);
-  div.classList.add("main__task");
-
-  div2.appendChild(span1);
-  div2.appendChild(span2);
-  div2.appendChild(span3);
-  div2.appendChild(span4);
-  div2.classList.add("more__info")
-  div2.classList.add("display__none")
-
-
-  fragment.appendChild(figure);
-  sectionTasks.appendChild(fragment);
-
+  fragment.appendChild(figure)
+  sectionTasks.appendChild(fragment)
   showProperties()
 }
 
 
 const showMore = (e) => {
-    if(e.target.matches(".edit") || e.target.matches("#checkbox"))return
-    const divParent = e.currentTarget
-   
-    divParent.nextElementSibling.classList.toggle("display__none")
-
+    if(e.target.matches(".edit") || e.target.matches("#checkbox") || e.target.matches(".delete"))return
+    const divParent = e.currentTarget;
+    divParent.nextElementSibling.classList.toggle("display__none");
 }
 
 function showProperties(){
@@ -98,4 +84,14 @@ function showProperties(){
     })
 }
 
-export { clickBtnTask, clickBtnAdd, showProperties};
+function clickEdit(){
+    const editIcons = document.querySelectorAll(".edit");
+    editIcons.forEach((icon)=>{
+      icon.addEventListener('click',openModal)
+    });
+}
+
+
+
+
+export {clickBtnTask, clickBtnModal, showProperties, clickEdit};

@@ -1,10 +1,11 @@
 import "./styles.css"
-import { clickBtnAdd, clickBtnTask, showProperties } from "./modules/dom.js";
+import { clickBtnModal, clickBtnTask, showProperties,clickEdit } from "./modules/dom.js";
 
 
 const initApp = () => {
     clickBtnTask();
-    clickBtnAdd();
+    clickBtnModal();
     showProperties();
+    clickEdit();
 }
 window.addEventListener("DOMContentLoaded",initApp)

@@ -12,4 +12,16 @@ export default class Task {
     get getData(){
         return {title:this.#title,dueDate:this.#dueDate,description:this.#description,priority:this.#priority}
     }
+    set title(title){
+        this.#title = title
+    }
+    set dueDate(dueDate){
+        this.#dueDate = dueDate
+    }
+    set description(description){
+        this.#description = description
+    }
+    set priority(priority){
+        this.#priority = priority
+    }
 }
