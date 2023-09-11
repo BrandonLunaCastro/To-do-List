@@ -1,13 +1,13 @@
 import Task from "./logic.js";
-import { saveLocalStorage } from "./storage.js";
+import { saveLocalStorage, loadStorage, removeItem} from "./storage.js";
 
 //function that activates modal window
 const openModal = (e) => {
-  if(e.currentTarget.matches("#addTask"))document.querySelector(".modal").showModal();
-  if(e.currentTarget.matches(".edit")){
+  if (e.currentTarget.matches("#addTask"))
+    document.querySelector(".modal").showModal();
+  if (e.currentTarget.matches(".edit")) {
     document.querySelector(".edit__modal").showModal();
-    loadModalFields()
-    
+    findElement(e.currentTarget);
   }
 };
 function clickBtnTask() {
@@ -20,36 +20,50 @@ const submitTask = (e) => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
   createTask(data.title, data.dueDate, data.description, data.priority);
-  
+
   document.querySelector(".modal").close();
   e.currentTarget.reset();
-  
 };
 
 function clickBtnModal() {
   document.querySelector(".form").addEventListener("submit", submitTask);
-  document.querySelector(".form__edit").addEventListener("submit",editTask)
+  document.querySelector(".form__edit").addEventListener("submit", editTask);
 }
 
+const deleteTask = (e) => {
+  //delete task inner DOM
+  e.target.closest(".task").remove()
+  removeItem()
+}
+
+function clickBtnDelete(){
+  const btnDeletes = document.querySelectorAll(".delete")
+  btnDeletes.forEach((btn) => {
+    btn.addEventListener("click", deleteTask)
+  })
+
+}
+
+
 //this function generate instance of class task
-function createTask(title, dueDate, description, priority){
+function createTask(title, dueDate, description, priority) {
   const newTask = new Task(title, dueDate, description, priority);
   const dataInfo = newTask.getData;
 
   insertTask(dataInfo);
   saveLocalStorage(dataInfo);
-  clickEdit()
+  clickEdit();
 }
 //this function insert task to DOM
 function insertTask(data) {
-  let { title, dueDate, description, priority ,id } = data;
+  let { title, dueDate, description, priority, id } = data;
   const sectionTasks = document.querySelector(".tasks"),
     figure = document.createElement("figure"),
-    fragment = document.createDocumentFragment()
+    fragment = document.createDocumentFragment();
 
-   figure.classList.add("task")
-   figure.setAttribute("data-id",id)
-   figure.innerHTML = `  
+  figure.classList.add("task");
+  figure.setAttribute("data-id", id);
+  figure.innerHTML = `  
         <div class="main__task">
           <div>
             <input type="checkbox" name="checkbox" id="checkbox">
@@ -69,44 +83,58 @@ function insertTask(data) {
       </div>
   `;
 
-  fragment.appendChild(figure)
-  sectionTasks.appendChild(fragment)
-  showProperties()
+  fragment.appendChild(figure);
+  sectionTasks.appendChild(fragment);
+  showProperties();
 }
-
 
 const showMore = (e) => {
-    if(e.target.matches(".edit") || e.target.matches("#checkbox") || e.target.matches(".delete"))return
-    const divParent = e.currentTarget;
-    divParent.nextElementSibling.classList.toggle("display__none");
+  if (
+    e.target.matches(".edit") ||
+    e.target.matches("#checkbox") ||
+    e.target.matches(".delete")
+  )
+    return;
+  const divParent = e.currentTarget;
+  divParent.nextElementSibling.classList.toggle("display__none");
+};
+
+function showProperties() {
+  const infoTasks = document.querySelectorAll(".main__task");
+  console.log(infoTasks);
+  infoTasks.forEach((task) => {
+    task.addEventListener("click", showMore);
+  });
 }
 
-function showProperties(){
-   const infoTasks = document.querySelectorAll(".main__task")
-   console.log(infoTasks)
-    infoTasks.forEach((task)=>{
-        task.addEventListener("click",showMore)
-    })
+function clickEdit() {
+  const editIcons = document.querySelectorAll(".edit");
+  editIcons.forEach((icon) => {
+    icon.addEventListener("click", openModal);
+  });
 }
 
-function clickEdit(){
-    const editIcons = document.querySelectorAll(".edit");
-    editIcons.forEach((icon)=>{
-      icon.addEventListener('click',openModal)
-    });
-}
-const loadModalFields = () => {
-  const editForm = document.querySelector(".form__edit");
-  const editFormData = new FormData(editForm)
- editFormData.set("title","title")
- console.log(editFormData.get("title"))
+const loadModal = (form, actualTask) => {
+  const { title, dueDate, description, priority } = form;
+    title.value = actualTask.title;
+    dueDate.value = actualTask.dueDate;
+    description.value = actualTask.description;
+    priority.value = actualTask.priority;
+  
+};
 
-}
+const findElement = (element) => {
+  const actualTask = element.closest(".task"),
+    idActual = actualTask.dataset.id,
+    arrTask = loadStorage(),
+    formEdit = document.querySelector(".form__edit");
 
+  const dataInfo = arrTask.filter((el) => idActual == el.id);
 
-const editTask = (e) => {
+  loadModal(formEdit.elements, dataInfo[0]);
 
-}
+};
 
+const editTask = (e) => {};
 
-export {clickBtnTask, clickBtnModal, showProperties, clickEdit};
+export { clickBtnTask, clickBtnModal,clickBtnDelete ,showProperties, clickEdit ,insertTask };

@@ -1,5 +1,8 @@
+import { clickBtnDelete, clickEdit, insertTask} from "./dom.js";
+
 function loadStorage(){
     const arrList = JSON.parse(localStorage.getItem("totalTask"));
+    console.log(localStorage.key(1))
     return arrList;
 }
 
@@ -14,4 +17,19 @@ function saveLocalStorage(data){
     }
 }
 
-export {saveLocalStorage,loadStorage}
+function removeItem(){
+
+
+}
+
+const loadTask = () => {
+    const dataAll = loadStorage();
+    if(!dataAll)return
+    for(let task of dataAll){
+        insertTask(task);
+    }
+    clickEdit();
+    clickBtnDelete()
+}
+
+export {saveLocalStorage,loadStorage,loadTask,removeItem}
