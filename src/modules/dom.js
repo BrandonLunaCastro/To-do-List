@@ -1,5 +1,5 @@
 import Task from "./logic.js";
-import { saveLocalStorage, loadStorage, removeItem} from "./storage.js";
+import { saveLocalStorage, loadStorage, removeItem } from "./storage.js";
 
 //function that activates modal window
 const openModal = (e) => {
@@ -32,18 +32,19 @@ function clickBtnModal() {
 
 const deleteTask = (e) => {
   //delete task inner DOM
-  e.target.closest(".task").remove()
-  removeItem()
-}
+  let taskDelete = e.target.closest(".task"),
+        id = taskDelete.dataset.id;
+  
+  taskDelete.remove();
+  removeItem(id);
+};
 
-function clickBtnDelete(){
-  const btnDeletes = document.querySelectorAll(".delete")
+function clickBtnDelete() {
+  const btnDeletes = document.querySelectorAll(".delete");
   btnDeletes.forEach((btn) => {
-    btn.addEventListener("click", deleteTask)
-  })
-
+    btn.addEventListener("click", deleteTask);
+  });
 }
-
 
 //this function generate instance of class task
 function createTask(title, dueDate, description, priority) {
@@ -116,11 +117,10 @@ function clickEdit() {
 
 const loadModal = (form, actualTask) => {
   const { title, dueDate, description, priority } = form;
-    title.value = actualTask.title;
-    dueDate.value = actualTask.dueDate;
-    description.value = actualTask.description;
-    priority.value = actualTask.priority;
-  
+  title.value = actualTask.title;
+  dueDate.value = actualTask.dueDate;
+  description.value = actualTask.description;
+  priority.value = actualTask.priority;
 };
 
 const findElement = (element) => {
@@ -132,9 +132,15 @@ const findElement = (element) => {
   const dataInfo = arrTask.filter((el) => idActual == el.id);
 
   loadModal(formEdit.elements, dataInfo[0]);
-
 };
 
 const editTask = (e) => {};
 
-export { clickBtnTask, clickBtnModal,clickBtnDelete ,showProperties, clickEdit ,insertTask };
+export {
+  clickBtnTask,
+  clickBtnModal,
+  clickBtnDelete,
+  showProperties,
+  clickEdit,
+  insertTask,
+};

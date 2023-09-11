@@ -2,11 +2,10 @@ import { clickBtnDelete, clickEdit, insertTask} from "./dom.js";
 
 function loadStorage(){
     const arrList = JSON.parse(localStorage.getItem("totalTask"));
-    console.log(localStorage.key(1))
     return arrList;
 }
 
-function saveLocalStorage(data){
+function saveLocalStorage(data,flag = false){
     const lists = loadStorage()   
     if(!lists){
         localStorage.setItem("totalTask",JSON.stringify([data]))
@@ -15,11 +14,16 @@ function saveLocalStorage(data){
         lists.push(data)
         localStorage.setItem("totalTask",JSON.stringify(lists))
     }
+    if(flag){
+        localStorage.clear()
+        localStorage.setItem("totalTask",JSON.stringify(data))
+    }
 }
-
-function removeItem(){
-
-
+//function take care of delete data Task on the localStorage
+function removeItem(id){
+ const actualStorage = loadStorage()
+ let taskToRemove = actualStorage.filter((element) => !(element.id == id))
+ saveLocalStorage(taskToRemove,true)
 }
 
 const loadTask = () => {
