@@ -1,9 +1,14 @@
 import Task from "./logic.js";
+import { saveLocalStorage } from "./storage.js";
 
 //function that activates modal window
 const openModal = (e) => {
   if(e.currentTarget.matches("#addTask"))document.querySelector(".modal").showModal();
-  if(e.currentTarget.matches(".edit"))document.querySelector(".edit__modal").showModal();
+  if(e.currentTarget.matches(".edit")){
+    document.querySelector(".edit__modal").showModal();
+    loadModalFields()
+    
+  }
 };
 function clickBtnTask() {
   const btnAddTask = document.getElementById("addTask");
@@ -15,14 +20,11 @@ const submitTask = (e) => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
   createTask(data.title, data.dueDate, data.description, data.priority);
+  
   document.querySelector(".modal").close();
   e.currentTarget.reset();
+  
 };
-
-const editTask = (e) => {
-
-}
-
 
 function clickBtnModal() {
   document.querySelector(".form").addEventListener("submit", submitTask);
@@ -30,20 +32,23 @@ function clickBtnModal() {
 }
 
 //this function generate instance of class task
-function createTask(title, dueDate, description, priority) {
+function createTask(title, dueDate, description, priority){
   const newTask = new Task(title, dueDate, description, priority);
   const dataInfo = newTask.getData;
+
   insertTask(dataInfo);
+  saveLocalStorage(dataInfo);
   clickEdit()
 }
 //this function insert task to DOM
 function insertTask(data) {
-  let { title, dueDate, description, priority } = data;
+  let { title, dueDate, description, priority ,id } = data;
   const sectionTasks = document.querySelector(".tasks"),
     figure = document.createElement("figure"),
     fragment = document.createDocumentFragment()
 
    figure.classList.add("task")
+   figure.setAttribute("data-id",id)
    figure.innerHTML = `  
         <div class="main__task">
           <div>
@@ -90,8 +95,18 @@ function clickEdit(){
       icon.addEventListener('click',openModal)
     });
 }
+const loadModalFields = () => {
+  const editForm = document.querySelector(".form__edit");
+  const editFormData = new FormData(editForm)
+ editFormData.set("title","title")
+ console.log(editFormData.get("title"))
+
+}
 
 
+const editTask = (e) => {
+
+}
 
 
 export {clickBtnTask, clickBtnModal, showProperties, clickEdit};
