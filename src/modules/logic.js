@@ -1,13 +1,13 @@
 import { loadStorage } from "./storage.js"
 
-const storage = loadStorage()
+const _storage = loadStorage()
 
 export default class Task {
    #title
    #dueDate
    #description
    #priority
-   static count = !storage ? 0 : lastIndex(storage)
+   static count = !_storage ? 0 : lastIndex(_storage)
 
     constructor(title,dueDate,description,priority){
         this.#title = title
@@ -25,3 +25,13 @@ export default class Task {
 function lastIndex(arr){
   return arr.at(-1).id
 }
+
+const findElement = (element) => {
+    const actualTask = element.closest(".task"),
+      idActual = actualTask.dataset.id;
+      const dataInfo = _storage.filter((el) => idActual == el.id);
+      return dataInfo
+}
+
+
+export {findElement}

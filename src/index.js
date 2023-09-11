@@ -6,7 +6,6 @@ import { loadTask } from "./modules/storage.js";
 const initApp = () => {
     clickBtnTask();
     clickBtnModal();
-    showProperties();
     loadTask();
    
 }

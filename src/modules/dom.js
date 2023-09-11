@@ -1,5 +1,5 @@
-import Task from "./logic.js";
-import { saveLocalStorage, loadStorage, removeItem } from "./storage.js";
+import Task, { findElement } from "./logic.js";
+import { saveLocalStorage, removeItem, editItem } from "./storage.js";
 
 //function that activates modal window
 const openModal = (e) => {
@@ -7,7 +7,7 @@ const openModal = (e) => {
     document.querySelector(".modal").showModal();
   if (e.currentTarget.matches(".edit")) {
     document.querySelector(".edit__modal").showModal();
-    findElement(e.currentTarget);
+    dataTransfer(e.currentTarget);
   }
 };
 function clickBtnTask() {
@@ -27,18 +27,17 @@ const submitTask = (e) => {
 
 function clickBtnModal() {
   document.querySelector(".form").addEventListener("submit", submitTask);
-  document.querySelector(".form__edit").addEventListener("submit", editTask);
 }
 
 const deleteTask = (e) => {
   //delete task inner DOM
   let taskDelete = e.target.closest(".task"),
-        id = taskDelete.dataset.id;
-  
+    id = taskDelete.dataset.id;
+
   taskDelete.remove();
   removeItem(id);
 };
-
+// When target is "icon trash" , trigger this function
 function clickBtnDelete() {
   const btnDeletes = document.querySelectorAll(".delete");
   btnDeletes.forEach((btn) => {
@@ -53,7 +52,7 @@ function createTask(title, dueDate, description, priority) {
 
   insertTask(dataInfo);
   saveLocalStorage(dataInfo);
-  clickEdit();
+  
 }
 //this function insert task to DOM
 function insertTask(data) {
@@ -87,6 +86,7 @@ function insertTask(data) {
   fragment.appendChild(figure);
   sectionTasks.appendChild(fragment);
   showProperties();
+  clickEdit();
 }
 
 const showMore = (e) => {
@@ -115,26 +115,31 @@ function clickEdit() {
   });
 }
 
+const editTask = (form, element) => {
+  const elementOrigin = findElement(element)
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const editData = Object.fromEntries(new FormData(e.target));
+    editItem(elementOrigin[0],editData)
+  });
+};
+
 const loadModal = (form, actualTask) => {
   const { title, dueDate, description, priority } = form;
+  console.log(title.value)
   title.value = actualTask.title;
   dueDate.value = actualTask.dueDate;
   description.value = actualTask.description;
-  priority.value = actualTask.priority;
+  priority.value = actualTask.priority; 
 };
-
-const findElement = (element) => {
-  const actualTask = element.closest(".task"),
-    idActual = actualTask.dataset.id,
-    arrTask = loadStorage(),
-    formEdit = document.querySelector(".form__edit");
-
-  const dataInfo = arrTask.filter((el) => idActual == el.id);
-
+const dataTransfer = (element) => {
+  console.log(element)
+  const formEdit = document.querySelector(".form__edit");
+  const dataInfo = findElement(element);
+  console.log(dataInfo[0])
   loadModal(formEdit.elements, dataInfo[0]);
+  editTask(formEdit, element);
 };
-
-const editTask = (e) => {};
 
 export {
   clickBtnTask,

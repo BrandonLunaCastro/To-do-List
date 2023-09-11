@@ -26,6 +26,27 @@ function removeItem(id){
  saveLocalStorage(taskToRemove,true)
 }
 
+const saveNewData = (obj) => {
+    const storage = loadStorage()
+    let indexObj; 
+    storage.forEach((el,index) => {
+        if(el.id == obj.id){
+            indexObj = index
+        }
+    });
+    storage[indexObj] = obj;
+    saveLocalStorage(storage,true);
+}
+
+const editItem = (obj,newData) => {
+    obj.title = newData.title;
+    obj.dueDate = newData.dueDate;
+    obj.description = newData.description;
+    obj.priority = newData.priority;
+
+    saveNewData(obj);
+}
+
 const loadTask = () => {
     const dataAll = loadStorage();
     if(!dataAll)return
@@ -36,4 +57,4 @@ const loadTask = () => {
     clickBtnDelete()
 }
 
-export {saveLocalStorage,loadStorage,loadTask,removeItem}
+export {saveLocalStorage,loadStorage,loadTask,removeItem,editItem   }
