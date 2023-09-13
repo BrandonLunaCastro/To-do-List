@@ -7,7 +7,7 @@ export default class Task {
    #dueDate
    #description
    #priority
-   static count = !_storage ? 0 : lastIndex(_storage)
+   static count = _storage.length == 0 ? 0 : lastIndex(_storage)
 
     constructor(title,dueDate,description,priority){
         this.#title = title
@@ -19,17 +19,16 @@ export default class Task {
     get getData(){
         return {title:this.#title,dueDate:this.#dueDate,description:this.#description,priority:this.#priority,id:this.id}
     }
- 
 }
-
 function lastIndex(arr){
   return arr.at(-1).id
 }
 
 const findElement = (element) => {
     const actualTask = element.closest(".task"),
-      idActual = actualTask.dataset.id;
-      const dataInfo = _storage.filter((el) => idActual == el.id);
+      idActual = actualTask.dataset.id,
+      actualStorage = loadStorage()
+      const dataInfo = actualStorage.filter((el) => idActual == el.id);
       return dataInfo
 }
 
