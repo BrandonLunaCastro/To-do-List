@@ -55,7 +55,7 @@ function createTask(title, dueDate, description, priority) {
   
 }
 //this function insert task to DOM
-function insertTask(data) {
+function insertTask(data,flag = false) {
   let { title, dueDate, description, priority, id } = data;
   const sectionTasks = document.querySelector(".tasks"),
     figure = document.createElement("figure"),
@@ -67,7 +67,7 @@ function insertTask(data) {
         <div class="main__task">
           <div>
             <input type="checkbox" name="checkbox" id="checkbox">
-            <span>${title}</span>
+            <span class="main__title" >${title}</span>
           </div>
           <div>
             <i class="edit fa-regular fa-pen-to-square"></i>
@@ -75,19 +75,29 @@ function insertTask(data) {
           </div>
         </div>
         <div class="more__info display__none">
-          <span><b>Title:</b>${title}</span>
-          <span><b>Due Date:</b>${dueDate}</span>
-          <span><b>Description:</b>${description}</span>
-          <span><b>Priority:</b>${priority}</span>
+          <span class="info__title"><b>Title:</b>${title}</span>
+          <span class="info__date"><b>Due Date:</b>${dueDate}</span>
+          <span class="info__description"><b>Description:</b>${description}</span>
+          <span class="info__priority"><b>Priority:</b>${priority}</span>
         </div>
       </div>
   `;
 
-  fragment.appendChild(figure);
-  sectionTasks.appendChild(fragment);
-  showProperties();
-  clickEdit();
+  if(flag === true){
+    showProperties();
+    clickEdit();
+    clickBtnDelete();
+    return figure
+  }
+  if(!flag){
+    fragment.appendChild(figure);
+    sectionTasks.appendChild(fragment);
+    showProperties();
+    clickEdit();
+    clickBtnDelete();
+  }
 }
+
 
 const showMore = (e) => {
   if (
@@ -115,12 +125,21 @@ function clickEdit() {
   });
 }
 
-const editTask = (form, element) => {
+const replaceTask = (task,element) => {
+  task.replaceWith(insertTask(element,true))
+  showProperties();
+  clickEdit();
+  clickBtnDelete();
+}
+
+const editTask = (form, element ,task) => {
   const elementOrigin = findElement(element)
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const editData = Object.fromEntries(new FormData(e.target));
-    editItem(elementOrigin[0],editData)
+    editItem(elementOrigin[0],editData);
+    replaceTask(task,elementOrigin[0])
+    document.querySelector(".edit__modal").close();
   });
 };
 
@@ -133,12 +152,12 @@ const loadModal = (form, actualTask) => {
   priority.value = actualTask.priority; 
 };
 const dataTransfer = (element) => {
-  console.log(element)
-  const formEdit = document.querySelector(".form__edit");
-  const dataInfo = findElement(element);
+  const formEdit = document.querySelector(".form__edit"),
+     dataInfo = findElement(element),
+     actualTask = element.closest(".task")
   console.log(dataInfo[0])
   loadModal(formEdit.elements, dataInfo[0]);
-  editTask(formEdit, element);
+  editTask(formEdit, element ,actualTask);
 };
 
 export {
