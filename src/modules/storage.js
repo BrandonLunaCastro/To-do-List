@@ -47,6 +47,13 @@ const editItem = (obj,newData) => {
     saveNewData(obj);
 }
 
+const saveProject = () => {
+    
+    localStorage.setItem("totalProject",)
+}
+
+
+
 const loadTask = () => {
     const dataAll = loadStorage();
     if(!dataAll)return

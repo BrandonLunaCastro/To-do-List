@@ -1,6 +1,6 @@
 import Task, { findElement } from "./logic.js";
 import { saveLocalStorage, removeItem, editItem } from "./storage.js";
-
+/* Code with Task */
 //function that activates modal window
 const openModal = (e) => {
   if (e.currentTarget.matches("#addTask"))
@@ -84,10 +84,7 @@ function insertTask(data,flag = false) {
   `;
 
   if(flag === true){
-    showProperties();
-    clickEdit();
-    clickBtnDelete();
-    return figure
+    return figure;
   }
   if(!flag){
     fragment.appendChild(figure);
@@ -159,6 +156,32 @@ const dataTransfer = (element) => {
   loadModal(formEdit.elements, dataInfo[0]);
   editTask(formEdit, element ,actualTask);
 };
+
+/* This code take care of section projects */
+const showOpt = (e) => {
+  const btnAdd = e.currentTarget;
+  btnAdd.classList.add("display__none");
+  btnAdd.nextElementSibling.classList.remove("display__none"); 
+
+} 
+
+document.querySelector(".add__project").addEventListener('click',showOpt)
+
+const addProject = (e) => {
+  const element = e.currentTarget,
+        input = document.getElementById("name").value,
+        sectionProjects = document.querySelector(".projects"),
+        p = document.createElement("p");
+  
+  p.innerText = input;        
+  p.classList.add("project")
+  sectionProjects.appendChild(p);
+
+  element.parentElement.classList.add("display__none");
+  document.querySelector(".add__project").classList.remove("display__none");
+}
+
+document.querySelector("#btn__add").addEventListener("click",addProject);
 
 export {
   clickBtnTask,
