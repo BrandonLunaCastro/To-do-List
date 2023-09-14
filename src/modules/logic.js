@@ -36,8 +36,19 @@ const findElement = (element) => {
   const actualTask = element.closest(".task"),
     idActual = actualTask.dataset.id,
     actualStorage = loadStorage();
+
   const dataInfo = actualStorage.filter((el) => idActual == el.id);
+
   return dataInfo;
 };
+
+/* const sameObject = (obj,newObj) => {
+  console.log("old obj id")
+  console.log(obj.id)
+  console.log("new object id")
+  console.log(newObj.id)
+  return  obj.id == newObj.id ? true : false ;
+} */
+
 
 export { findElement };

@@ -1,4 +1,4 @@
-import Task, { findElement } from "./logic.js";
+import Task, { findElement, sameObject } from "./logic.js";
 import { saveLocalStorage, deleteItem, editItem, saveProject } from "./storage.js";
 /* Code with Task */
 //function that activates modal window
@@ -127,40 +127,43 @@ const replaceTask = (task, element) => {
 };
 
 const editTask = (form, element, task) => {
-  let formSubmited = false
-  form.addEventListener("submit", (e) => {
-    if(!formSubmited){
-      formSubmited = true
-    }
-    //fix aqui
-  //  const elementOrigin = findElement(element);
-    console.log("se acciona el evento submit")
+  console.log(task)
+  console.log(element)
+
+  let actualElement = findElement(element);
+  //fix a arreglar
+  form.addEventListener("submit", (e) => { 
     e.preventDefault();
-    const editData = Object.fromEntries(new FormData(e.target));
-    console.log("data del form")
+    console.log(actualElement)
+    
+    let editData = Object.fromEntries(new FormData(e.target));
+    editData.id = task.dataset.id
+  
+   /*  console.log("data del form")
     console.log(editData)
     console.log("data previa")
-    console.log(element)
-    editItem(element, editData);
-    replaceTask(task, element);
+    console.log(actualElement[0])   */
+    editItem(actualElement[0], editData);
+    replaceTask(task, actualElement[0]);
     document.querySelector(".edit__modal").close();
   });
 };
 
-const loadModal = (form, actualTask) => {
-  console.log("se ejecuta load modal")
+const loadModal = (form, element) => {
+  let actualTask = findElement(element)
   const { title, dueDate, description, priority } = form;
-  title.value = actualTask.title;
-  dueDate.value = actualTask.dueDate;
-  description.value = actualTask.description;
-  priority.value = actualTask.priority;
+  title.value = actualTask[0].title;
+  dueDate.value = actualTask[0].dueDate;
+  description.value = actualTask[0].description;
+  priority.value = actualTask[0].priority;
 };
 const dataTransfer = (element) => {
+  
   const formEdit = document.querySelector(".form__edit"),
-    dataInfo = findElement(element),
+    //dataInfo = findElement(element),
     actualTask = element.closest(".task");
-  loadModal(formEdit.elements, dataInfo[0]);
-  editTask(formEdit, dataInfo[0], actualTask);
+  loadModal(formEdit.elements, element);
+  editTask(formEdit, element, actualTask);
 };
 
 /* This code take care of section projects */
