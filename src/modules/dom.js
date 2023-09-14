@@ -1,5 +1,5 @@
 import Task, { findElement } from "./logic.js";
-import { saveLocalStorage, removeItem, editItem } from "./storage.js";
+import { saveLocalStorage, deleteItem, editItem, saveProject } from "./storage.js";
 /* Code with Task */
 //function that activates modal window
 const openModal = (e) => {
@@ -19,7 +19,8 @@ function clickBtnTask() {
 const submitTask = (e) => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
-  createTask(data.title, data.dueDate, data.description, data.priority);
+ 
+  createTask(data.title, data.dueDate, data.description, data.priority,data.project);
 
   document.querySelector(".modal").close();
   e.currentTarget.reset();
@@ -35,7 +36,7 @@ const deleteTask = (e) => {
     id = taskDelete.dataset.id;
 
   taskDelete.remove();
-  removeItem(id);
+  deleteItem(id);
 };
 // When target is "icon trash" , trigger this function
 function clickBtnDelete() {
@@ -46,16 +47,14 @@ function clickBtnDelete() {
 }
 
 //this function generate instance of class task
-function createTask(title, dueDate, description, priority) {
-  const newTask = new Task(title, dueDate, description, priority);
+function createTask(title, dueDate, description, priority, project) {
+  const newTask = new Task(title, dueDate, description, priority, project);
   const dataInfo = newTask.getData;
-
   insertTask(dataInfo);
   saveLocalStorage(dataInfo);
-  
 }
 //this function insert task to DOM
-function insertTask(data,flag = false) {
+function insertTask(data, flag = false) {
   let { title, dueDate, description, priority, id } = data;
   const sectionTasks = document.querySelector(".tasks"),
     figure = document.createElement("figure"),
@@ -83,10 +82,10 @@ function insertTask(data,flag = false) {
       </div>
   `;
 
-  if(flag === true){
+  if (flag === true) {
     return figure;
   }
-  if(!flag){
+  if (!flag) {
     fragment.appendChild(figure);
     sectionTasks.appendChild(fragment);
     showProperties();
@@ -94,7 +93,6 @@ function insertTask(data,flag = false) {
     clickBtnDelete();
   }
 }
-
 
 const showMore = (e) => {
   if (
@@ -109,7 +107,6 @@ const showMore = (e) => {
 
 function showProperties() {
   const infoTasks = document.querySelectorAll(".main__task");
-  console.log(infoTasks);
   infoTasks.forEach((task) => {
     task.addEventListener("click", showMore);
   });
@@ -122,66 +119,88 @@ function clickEdit() {
   });
 }
 
-const replaceTask = (task,element) => {
-  task.replaceWith(insertTask(element,true))
+const replaceTask = (task, element) => {
+  task.replaceWith(insertTask(element, true));
   showProperties();
   clickEdit();
   clickBtnDelete();
-}
+};
 
-const editTask = (form, element ,task) => {
-  const elementOrigin = findElement(element)
+const editTask = (form, element, task) => {
+  let formSubmited = false
   form.addEventListener("submit", (e) => {
+    if(!formSubmited){
+      formSubmited = true
+    }
+    //fix aqui
+  //  const elementOrigin = findElement(element);
+    console.log("se acciona el evento submit")
     e.preventDefault();
     const editData = Object.fromEntries(new FormData(e.target));
-    editItem(elementOrigin[0],editData);
-    replaceTask(task,elementOrigin[0])
+    console.log("data del form")
+    console.log(editData)
+    console.log("data previa")
+    console.log(element)
+    editItem(element, editData);
+    replaceTask(task, element);
     document.querySelector(".edit__modal").close();
   });
 };
 
 const loadModal = (form, actualTask) => {
+  console.log("se ejecuta load modal")
   const { title, dueDate, description, priority } = form;
-  console.log(title.value)
   title.value = actualTask.title;
   dueDate.value = actualTask.dueDate;
   description.value = actualTask.description;
-  priority.value = actualTask.priority; 
+  priority.value = actualTask.priority;
 };
 const dataTransfer = (element) => {
   const formEdit = document.querySelector(".form__edit"),
-     dataInfo = findElement(element),
-     actualTask = element.closest(".task")
-  console.log(dataInfo[0])
+    dataInfo = findElement(element),
+    actualTask = element.closest(".task");
   loadModal(formEdit.elements, dataInfo[0]);
-  editTask(formEdit, element ,actualTask);
+  editTask(formEdit, dataInfo[0], actualTask);
 };
 
 /* This code take care of section projects */
 const showOpt = (e) => {
   const btnAdd = e.currentTarget;
   btnAdd.classList.add("display__none");
-  btnAdd.nextElementSibling.classList.remove("display__none"); 
+  btnAdd.nextElementSibling.classList.remove("display__none");
+};
 
-} 
-
-document.querySelector(".add__project").addEventListener('click',showOpt)
+document.querySelector(".add__project").addEventListener("click", showOpt);
 
 const addProject = (e) => {
   const element = e.currentTarget,
-        input = document.getElementById("name").value,
-        sectionProjects = document.querySelector(".projects"),
-        p = document.createElement("p");
+    input = document.getElementById("name").value,
+    sectionProjects = document.querySelector(".projects"),
+    p = document.createElement("p"),
+    selectProject = document.querySelector(".select__project"),
+    selectEdit = document.getElementById("edit__select"),
+    option = document.createElement("option");
+
+  option.innerText = input;
+  option.setAttribute("value",input); 
+  selectProject.appendChild(option);
   
-  p.innerText = input;        
-  p.classList.add("project")
+  //clonamos el nodo y lo agregamos al select del dialog edit
+  const opt = option.cloneNode(true)
+  selectEdit.appendChild(opt);
+
+  //agregamos el project a la seccion de proyectos 
+  p.innerText = input;
+  p.classList.add("project");
   sectionProjects.appendChild(p);
+  saveProject(input)
+
 
   element.parentElement.classList.add("display__none");
   document.querySelector(".add__project").classList.remove("display__none");
-}
+};
 
-document.querySelector("#btn__add").addEventListener("click",addProject);
+document.querySelector("#btn__add").addEventListener("click", addProject);
 
 export {
   clickBtnTask,

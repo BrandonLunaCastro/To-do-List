@@ -1,36 +1,43 @@
-import { loadStorage } from "./storage.js"
+import { loadStorage } from "./storage.js";
 
-const _storage = loadStorage()
-
+const _storage = loadStorage();
 export default class Task {
-   #title
-   #dueDate
-   #description
-   #priority
-   static count = _storage.length == 0 ? 0 : lastIndex(_storage)
+  #title;
+  #dueDate;
+  #description;
+  #priority;
+  #project;
+  static count = !_storage || _storage.length === 0 ? 0 : lastIndex(_storage);
 
-    constructor(title,dueDate,description,priority){
-        this.#title = title
-        this.#dueDate = dueDate
-        this.#description = description
-        this.#priority = priority
-        this.id = ++Task.count
-    }
-    get getData(){
-        return {title:this.#title,dueDate:this.#dueDate,description:this.#description,priority:this.#priority,id:this.id}
-    }
+  constructor(title, dueDate, description, priority, project) {
+    this.#title = title;
+    this.#dueDate = dueDate;
+    this.#description = description;
+    this.#priority = priority;
+    this.#project = project;
+    this.id = ++Task.count;
+  }
+  get getData() {
+    return {
+      title: this.#title,
+      dueDate: this.#dueDate,
+      description: this.#description,
+      priority: this.#priority,
+      project: this.#project,
+      id: this.id,
+    };
+  }
 }
-function lastIndex(arr){
-  return arr.at(-1).id
+function lastIndex(arr) {
+  return arr.at(-1).id;
 }
 
 const findElement = (element) => {
-    const actualTask = element.closest(".task"),
-      idActual = actualTask.dataset.id,
-      actualStorage = loadStorage()
-      const dataInfo = actualStorage.filter((el) => idActual == el.id);
-      return dataInfo
-}
+  const actualTask = element.closest(".task"),
+    idActual = actualTask.dataset.id,
+    actualStorage = loadStorage();
+  const dataInfo = actualStorage.filter((el) => idActual == el.id);
+  return dataInfo;
+};
 
-
-export {findElement}
+export { findElement };
