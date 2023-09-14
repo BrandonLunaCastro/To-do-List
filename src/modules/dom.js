@@ -50,6 +50,7 @@ function clickBtnDelete() {
 function createTask(title, dueDate, description, priority, project) {
   const newTask = new Task(title, dueDate, description, priority, project);
   const dataInfo = newTask.getData;
+  console.log(dataInfo)
   insertTask(dataInfo);
   saveLocalStorage(dataInfo);
 }
@@ -127,26 +128,19 @@ const replaceTask = (task, element) => {
 };
 
 const editTask = (form, element, task) => {
-  console.log(task)
-  console.log(element)
-
   let actualElement = findElement(element);
-  //fix a arreglar
   form.addEventListener("submit", (e) => { 
     e.preventDefault();
     console.log(actualElement)
     
     let editData = Object.fromEntries(new FormData(e.target));
     editData.id = task.dataset.id
-  
-   /*  console.log("data del form")
     console.log(editData)
-    console.log("data previa")
-    console.log(actualElement[0])   */
     editItem(actualElement[0], editData);
     replaceTask(task, actualElement[0]);
+
     document.querySelector(".edit__modal").close();
-  });
+  },{once:true});
 };
 
 const loadModal = (form, element) => {
@@ -160,7 +154,6 @@ const loadModal = (form, element) => {
 const dataTransfer = (element) => {
   
   const formEdit = document.querySelector(".form__edit"),
-    //dataInfo = findElement(element),
     actualTask = element.closest(".task");
   loadModal(formEdit.elements, element);
   editTask(formEdit, element, actualTask);

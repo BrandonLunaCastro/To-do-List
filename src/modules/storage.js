@@ -25,7 +25,6 @@ function deleteItem(id) {
   let taskToRemove = actualStorage.filter((element) => !(element.id == id));
   saveLocalStorage(taskToRemove, true);
 }
-//fix a corregir
 const saveNewData = (obj) => {
   let storage = loadStorage();
   let indexObj;
@@ -34,25 +33,16 @@ const saveNewData = (obj) => {
       indexObj = index;
     }
   }); 
-
   storage[indexObj] = obj;
-
   saveLocalStorage(storage, true);
 };
 //funcion que recibe el objeto con la data antigua y la newData reemplaza la anterior
-const   editItem = (obj, newData) => {
-
- console.log("antes")
- console.log(obj)
-
+const editItem = (obj, newData) => {
   obj.title = newData.title;
   obj.dueDate = newData.dueDate;
   obj.description = newData.description;
   obj.priority = newData.priority;
   obj.project = newData.project
-  
- console.log("despues")
- console.log(obj)
 
   saveNewData(obj);
 };
