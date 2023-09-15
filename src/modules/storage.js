@@ -1,4 +1,4 @@
-import { clickBtnDelete, clickEdit, insertProject, insertTask } from "./dom.js";
+import { clickBtnDelete, clickEdit, clickMinus, insertProject, insertTask } from "./dom.js";
 import { renderTask } from "./logic.js";
 
 function loadStorage() {
@@ -52,7 +52,7 @@ const loadStorageProject = () => {
   return JSON.parse(localStorage.getItem("totalProjects"));
 };
 
-const saveProject = (project) => {
+const saveProject = (project, removed = false) => {
   const totalProjects = loadStorageProject();
   if (!totalProjects) {
     localStorage.setItem("totalProjects", JSON.stringify([project]));
@@ -61,7 +61,23 @@ const saveProject = (project) => {
     totalProjects.push(project);
     localStorage.setItem("totalProjects", JSON.stringify(totalProjects));
   }
+  if(totalProjects && removed){
+    localStorage.removeItem("totalProjects");
+    localStorage.setItem("totalProjects",JSON.stringify(project))
+  }
+
 };
+
+const deleteStorageProject = (element) => {
+  const totalProjects = loadStorageProject(),
+        elementRemoved = element.dataset.value,
+        index = totalProjects.indexOf(elementRemoved) 
+  //remove project to array
+  totalProjects.splice(index,1);
+  //save new array projects in local storage 
+  saveProject(totalProjects,true);
+}
+
 
 const loadProject = () => {
   const projects = loadStorageProject();
@@ -75,6 +91,7 @@ const loadProject = () => {
   });
 
   renderTask();
+  clickMinus();
 };
 
 const loadTask = () => {
@@ -95,4 +112,5 @@ export {
   editItem,
   saveProject,
   loadProject,
+  deleteStorageProject
 };
