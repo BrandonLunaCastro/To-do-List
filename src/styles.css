@@ -1,24 +1,104 @@
-/* :root{
-
-} */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root{
+  font-family:'Poppins', sans-serif;
+  --main-color:#222831;
+  --secondary-color:#EEEEEE;
+  --third-color:#00ADB5;
+  --remove-color:#BB2525;
+  /* --text-color:; */
+} 
 *,
 ::after,
 ::before {
   padding: 0;
   margin: 0;
+ /*  border: 1px solid black; */
+}
+body{
+  display: flex;
+  flex-direction: column;
+}
+
+header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  background:var(--main-color);
+  color:var(--secondary-color);
+}
+
+main{
+  display: flex;
+  background: var(--secondary-color);
+  flex: 3;
+}
+
+footer{
+  background-color: var(--main-color);
+  color: var(--secondary-color);
+  display: inherit;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 68px;
+}
+
+.logo{
+  display: inherit;
+  align-items: center;
+  gap: 6px;
+}
+
+.window__projects{
+  width: 18rem;
+  background-color: #EEEEEE;
+  box-shadow: 2px 2px 8px var(--main-color);
+  color: var(--main-color);
+
+}
+
+#add__project{
+  background-color: var(--third-color);
+  appearance: none;
+  outline: none;
+  border: none;
+  width: 150px;
+  height: 2rem;
+  border-radius: 8px;
+  box-shadow: 1px 1px 4px var(--main-color);
 }
 
 .tasks {
   display: flex;
   flex-direction: column;
+  margin: 0px auto;
   align-items: center;
   gap: 25px;
+  height: 100vh;
   margin-top: 2rem;
 }
+
+#addTask{
+
+  width: 4rem;
+  font-size: 2.8rem;
+  border-radius: 100%;
+  outline: none;
+  border: none;
+  background-color: var(--third-color);
+  box-shadow: 1px 1px 3px var(--main-color);
+  transition: transform .2s ease-in-out;
+}
+#addTask:hover{
+  cursor: pointer;
+  transform: translateY(-5px);
+}
+
+
 .task {
   display: flex;
   flex-direction: column;
-  background: indigo;
+  background: var(--main-color);
   border-radius: 8px;
   width: 500px;
   display: flex;
@@ -35,15 +115,34 @@
 }
 .main__task > * {
   padding: 10px;
+  color: var(--secondary-color);
 }
 .main__task > i {
   display: inherit;
   justify-content: end;
 }
+.more__info{
+  color: var(--secondary-color);
+}
+.edit:hover{
+  color: var(--third-color);
+}
+.delete:hover{
+  color: var(--remove-color);
+}
+
 .display__none{
     display: none;
 }
 .project{
   border-bottom: 2px solid #000;
-  width: 50px;
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+.minus{
+  border: 1px solid black;
+  border-radius: 80%;
+  padding: 2px;
+  cursor: pointer;
 }
