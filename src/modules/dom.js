@@ -4,6 +4,7 @@ import {
   deleteItem,
   editItem,
   saveProject,
+  deleteStorageProject,
 } from "./storage.js";
 /* Code with Task */
 //function that activates modal window
@@ -184,23 +185,46 @@ const showOpt = (e) => {
 
 document.querySelector(".add__project").addEventListener("click", showOpt);
 
+const deleteProject = (e) => {
+  const div = e.target.closest(".project"),
+  optionsElement = document.querySelectorAll(`[data-option=${div.dataset.value}]`)
+  
+  div.remove();
+  optionsElement.forEach(option => option.remove());
+  deleteStorageProject(div);
+}
+
+const clickMinus = () => {
+  const minusICon = document.querySelectorAll(".minus")
+  minusICon.forEach((icon) => icon.addEventListener("click",deleteProject))
+
+}
+
+
 const insertProject = (value) => {
   const div = document.createElement("div"),
     sectionProjects = document.querySelector(".projects"),
     selectProject = document.querySelector(".select__project"),
     selectEdit = document.getElementById("edit__select"),
+    icon = document.createElement("i"),
     option = document.createElement("option");
 
+  icon.className = "minus fa-solid fa-minus";  
   option.innerText = value;
   option.setAttribute("value", value);
+  option.setAttribute("data-option",value)
   selectProject.appendChild(option);
 
   const cloneOption = option.cloneNode(true);
   selectEdit.appendChild(cloneOption);
+ 
+
   div.innerText = value;
   div.classList.add("project");
   div.setAttribute("data-value", value);
+  div.appendChild(icon)
   sectionProjects.appendChild(div);
+  
 };
 
 const cancelAdd = (e) => {
@@ -210,33 +234,39 @@ const cancelAdd = (e) => {
 };
 
 const addProject = (e) => {
-  console.log(e.target);
+
   const element = e.target,
-    input = document.getElementById("name").value,
+    input = document.getElementById("name"),
     sectionProjects = document.querySelector(".projects"),
     div = document.createElement("div"),
     selectProject = document.querySelector(".select__project"),
     selectEdit = document.getElementById("edit__select"),
+    icon = document.createElement("i"),
     option = document.createElement("option");
 
-  option.innerText = input;
-  option.setAttribute("value", input);
+  icon.className = "minus fa-solid fa-minus";
+
+  option.innerText = input.value;
+  option.setAttribute("value", input.value);
+  option.setAttribute("data-option",input.value)
   selectProject.appendChild(option);
 
-  //clonamos el nodo y lo agregamos al select del dialog edit
+  //clone node and add option HTML element to correctly select
   const opt = option.cloneNode(true);
   selectEdit.appendChild(opt);
-
-  //agregamos el project a la seccion de proyectos
-  div.innerText = input;
+  //add project to section  
+  div.innerText = input.value;
   div.classList.add("project");
-  div.setAttribute("data-value", input);
+  div.setAttribute("data-value", input.value);
+  div.appendChild(icon)
   sectionProjects.appendChild(div);
-  saveProject(input);
+  saveProject(input.value);
 
   element.parentElement.classList.add("display__none");
   document.querySelector(".add__project").classList.remove("display__none");
+  input.value = "";
   renderTask();
+  clickMinus()
 };
 
 document
@@ -254,4 +284,5 @@ export {
   clickEdit,
   insertTask,
   insertProject,
+  clickMinus
 };
