@@ -50,9 +50,7 @@
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
                     </select>
-                    <select name="project" id="edit__select">
-                        
-                    </select>
+                    <select name="project" id="edit__select"></select>
                     <button type="submit" id="add" class="confirm__edit">Confirm edit</button>
                 </form>
             </dialog>   
@@ -60,13 +58,12 @@
         <article>
             <h2>Projects</h2>
             <button class="add__project" type="button" name="add__project" id="add__project">Add Project</button>
-            <div class="display__none">
+            <div class="option__project display__none">
                 <input type="text" name="name" id="name">
                 <button type="button" id="btn__add" name="btn__add">Add</button>
+                <button type="button" id="btn__cancel" name="cancel">Cancel</button>
             </div>
-            <div class="projects">
-              
-            </div>
+            <div class="projects"></div>
         </article>
         <article class="tasks"></article>
     </main>
