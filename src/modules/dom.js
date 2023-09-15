@@ -1,5 +1,10 @@
 import Task, { findElement, renderTask, sameObject } from "./logic.js";
-import { saveLocalStorage, deleteItem, editItem, saveProject } from "./storage.js";
+import {
+  saveLocalStorage,
+  deleteItem,
+  editItem,
+  saveProject,
+} from "./storage.js";
 /* Code with Task */
 //function that activates modal window
 const openModal = (e) => {
@@ -19,8 +24,14 @@ function clickBtnTask() {
 const submitTask = (e) => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
- 
-  createTask(data.title, data.dueDate, data.description, data.priority,data.project);
+
+  createTask(
+    data.title,
+    data.dueDate,
+    data.description,
+    data.priority,
+    data.project
+  );
 
   document.querySelector(".modal").close();
   e.currentTarget.reset();
@@ -50,7 +61,7 @@ function clickBtnDelete() {
 function createTask(title, dueDate, description, priority, project) {
   const newTask = new Task(title, dueDate, description, priority, project);
   const dataInfo = newTask.getData;
-  console.log(dataInfo)
+  console.log(dataInfo);
   insertTask(dataInfo);
   saveLocalStorage(dataInfo);
 }
@@ -129,38 +140,42 @@ const replaceTask = (task, element) => {
 
 const editTask = (form, element, task) => {
   let actualElement = findElement(element);
-  form.addEventListener("submit", (e) => { 
-    e.preventDefault();
-    console.log(actualElement)
-    
-    let editData = Object.fromEntries(new FormData(e.target));
-    editData.id = task.dataset.id
-    console.log(editData)
-    editItem(actualElement[0], editData);
-    replaceTask(task, actualElement[0]);
+  form.addEventListener(
+    "submit",
+    (e) => {
+      e.preventDefault();
+      console.log(actualElement);
 
-    document.querySelector(".edit__modal").close();
-  },{once:true});
+      let editData = Object.fromEntries(new FormData(e.target));
+      editData.id = task.dataset.id;
+      console.log(editData);
+      editItem(actualElement[0], editData);
+      replaceTask(task, actualElement[0]);
+
+      document.querySelector(".edit__modal").close();
+    },
+    { once: true }
+  );
 };
 
 const loadModal = (form, element) => {
-  let actualTask = findElement(element)
-  const { title, dueDate, description, priority ,project} = form;
+  let actualTask = findElement(element);
+  const { title, dueDate, description, priority, project } = form;
   title.value = actualTask[0].title;
   dueDate.value = actualTask[0].dueDate;
   description.value = actualTask[0].description;
   priority.value = actualTask[0].priority;
-  project.value = actualTask[0].project
+  project.value = actualTask[0].project;
 };
 const dataTransfer = (element) => {
-  
   const formEdit = document.querySelector(".form__edit"),
     actualTask = element.closest(".task");
   loadModal(formEdit.elements, element);
   editTask(formEdit, element, actualTask);
 };
 
-/* This code take care of section projects */
+/* -----------------This part of code take care section projects----------------- */
+
 const showOpt = (e) => {
   const btnAdd = e.currentTarget;
   btnAdd.classList.add("display__none");
@@ -170,28 +185,33 @@ const showOpt = (e) => {
 document.querySelector(".add__project").addEventListener("click", showOpt);
 
 const insertProject = (value) => {
-    const div = document.createElement("div"),
+  const div = document.createElement("div"),
     sectionProjects = document.querySelector(".projects"),
     selectProject = document.querySelector(".select__project"),
     selectEdit = document.getElementById("edit__select"),
     option = document.createElement("option");
 
-    option.innerText = value;
-    option.setAttribute("value",value);
-    selectProject.appendChild(option);
+  option.innerText = value;
+  option.setAttribute("value", value);
+  selectProject.appendChild(option);
 
-    const cloneOption = option.cloneNode(true);
-    selectEdit.appendChild(cloneOption)
-    div.innerText = value;
-    div.classList.add("project");
-    div.setAttribute("data-value",value)
-    sectionProjects.appendChild(div);
+  const cloneOption = option.cloneNode(true);
+  selectEdit.appendChild(cloneOption);
+  div.innerText = value;
+  div.classList.add("project");
+  div.setAttribute("data-value", value);
+  sectionProjects.appendChild(div);
+};
 
-}
-
+const cancelAdd = (e) => {
+  const element = e.target;
+  element.parentElement.classList.add("display__none");
+  document.querySelector(".add__project").classList.remove("display__none");
+};
 
 const addProject = (e) => {
-  const element = e.currentTarget,
+  console.log(e.target);
+  const element = e.target,
     input = document.getElementById("name").value,
     sectionProjects = document.querySelector(".projects"),
     div = document.createElement("div"),
@@ -200,27 +220,31 @@ const addProject = (e) => {
     option = document.createElement("option");
 
   option.innerText = input;
-  option.setAttribute("value",input); 
+  option.setAttribute("value", input);
   selectProject.appendChild(option);
-  
+
   //clonamos el nodo y lo agregamos al select del dialog edit
-  const opt = option.cloneNode(true)
+  const opt = option.cloneNode(true);
   selectEdit.appendChild(opt);
 
-  //agregamos el project a la seccion de proyectos 
+  //agregamos el project a la seccion de proyectos
   div.innerText = input;
   div.classList.add("project");
-  div.setAttribute("data-value",input)
+  div.setAttribute("data-value", input);
   sectionProjects.appendChild(div);
-  saveProject(input)
-
+  saveProject(input);
 
   element.parentElement.classList.add("display__none");
   document.querySelector(".add__project").classList.remove("display__none");
   renderTask();
 };
 
-document.querySelector("#btn__add").addEventListener("click", addProject);
+document
+  .querySelector(".option__project")
+  .addEventListener("click", (event) => {
+    if (event.target.matches("#btn__add")) addProject(event);
+    if (event.target.matches("#btn__cancel")) cancelAdd(event);
+  });
 
 export {
   clickBtnTask,
@@ -229,5 +253,5 @@ export {
   showProperties,
   clickEdit,
   insertTask,
-  insertProject
+  insertProject,
 };

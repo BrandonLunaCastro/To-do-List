@@ -43,46 +43,42 @@ const findElement = (element) => {
   return dataInfo;
 };
 
-
 const showTasks = (e) => {
   const storage = loadStorage(),
-      projectClicked = e.target.dataset.value,
-      sectionTasks = document.querySelector(".tasks")
-      
-      sectionTasks.innerHTML = "";
+    projectClicked = e.target.dataset.value,
+    sectionTasks = document.querySelector(".tasks");
 
-      if(projectClicked === 'Home'){
-        for(let task of storage){
-          insertTask(task)
-        }
-        return;
-      }
+  sectionTasks.innerHTML = "";
 
-  const filterTask = storage.filter((task) => task.project === projectClicked)
-
-  if(filterTask.length == 0){
-   return sectionTasks.innerHTML = `
-      <div class='error'>No se encuentran tareas asociadas a este proyecto</div>
-    `;
+  if (projectClicked === "Home") {
+    for (let task of storage) {
+      insertTask(task);
+    }
+    return;
   }
-  if(filterTask.length > 1){
-    for(let task of filterTask){
+
+  const filterTask = storage.filter((task) => task.project === projectClicked);
+
+  if (filterTask.length == 0) {
+    return (sectionTasks.innerHTML = `
+      <div class='error'>No se encuentran tareas asociadas a este proyecto</div>
+    `);
+  }
+  if (filterTask.length > 1) {
+    for (let task of filterTask) {
       insertTask(task);
     }
   }
-  if(filterTask.length < 2){
-      insertTask(filterTask[0]);
+  if (filterTask.length < 2) {
+    insertTask(filterTask[0]);
   }
-
-
-}
+};
 
 const renderTask = () => {
-  const totalProjects = document.querySelectorAll("[data-value]")
-   totalProjects.forEach(project => {
-      project.addEventListener("click",showTasks)
-  })
+  const totalProjects = document.querySelectorAll("[data-value]");
+  totalProjects.forEach((project) => {
+    project.addEventListener("click", showTasks);
+  });
+};
 
-}
-
-export { findElement,renderTask };
+export { findElement, renderTask };

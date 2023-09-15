@@ -33,7 +33,7 @@ const saveNewData = (obj) => {
     if (el.id == obj.id) {
       indexObj = index;
     }
-  }); 
+  });
   storage[indexObj] = obj;
   saveLocalStorage(storage, true);
 };
@@ -43,7 +43,7 @@ const editItem = (obj, newData) => {
   obj.dueDate = newData.dueDate;
   obj.description = newData.description;
   obj.priority = newData.priority;
-  obj.project = newData.project
+  obj.project = newData.project;
 
   saveNewData(obj);
 };
@@ -53,30 +53,29 @@ const loadStorageProject = () => {
 };
 
 const saveProject = (project) => {
-    const totalProjects = loadStorageProject(); 
-    if(!totalProjects){
-        localStorage.setItem("totalProjects",JSON.stringify([project]))
-    }
-    if(totalProjects){
-        totalProjects.push(project);
-        localStorage.setItem("totalProjects",JSON.stringify(totalProjects))
-    }
-
+  const totalProjects = loadStorageProject();
+  if (!totalProjects) {
+    localStorage.setItem("totalProjects", JSON.stringify([project]));
+  }
+  if (totalProjects) {
+    totalProjects.push(project);
+    localStorage.setItem("totalProjects", JSON.stringify(totalProjects));
+  }
 };
 
 const loadProject = () => {
-  const projects = loadStorageProject()
- 
-  if(!projects){
+  const projects = loadStorageProject();
+
+  if (!projects) {
     saveProject("Home");
     insertProject("Home");
   }
-  projects.forEach((project)=>{
+  projects.forEach((project) => {
     insertProject(project);
-  })
-   
-  renderTask()
-}
+  });
+
+  renderTask();
+};
 
 const loadTask = () => {
   const dataAll = loadStorage();
@@ -95,5 +94,5 @@ export {
   deleteItem,
   editItem,
   saveProject,
-  loadProject
+  loadProject,
 };
