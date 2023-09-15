@@ -1,4 +1,5 @@
-import { clickBtnDelete, clickEdit, insertTask } from "./dom.js";
+import { clickBtnDelete, clickEdit, insertProject, insertTask } from "./dom.js";
+import { renderTask } from "./logic.js";
 
 function loadStorage() {
   const arrList = JSON.parse(localStorage.getItem("totalTask"));
@@ -47,12 +48,12 @@ const editItem = (obj, newData) => {
   saveNewData(obj);
 };
 
-const loadProject = () => {
+const loadStorageProject = () => {
   return JSON.parse(localStorage.getItem("totalProjects"));
 };
 
 const saveProject = (project) => {
-    const totalProjects = loadProject(); 
+    const totalProjects = loadStorageProject(); 
     if(!totalProjects){
         localStorage.setItem("totalProjects",JSON.stringify([project]))
     }
@@ -62,6 +63,20 @@ const saveProject = (project) => {
     }
 
 };
+
+const loadProject = () => {
+  const projects = loadStorageProject()
+ 
+  if(!projects){
+    saveProject("Home");
+    insertProject("Home");
+  }
+  projects.forEach((project)=>{
+    insertProject(project);
+  })
+   
+  renderTask()
+}
 
 const loadTask = () => {
   const dataAll = loadStorage();
@@ -80,4 +95,5 @@ export {
   deleteItem,
   editItem,
   saveProject,
+  loadProject
 };

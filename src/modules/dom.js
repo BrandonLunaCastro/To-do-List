@@ -1,4 +1,4 @@
-import Task, { findElement, sameObject } from "./logic.js";
+import Task, { findElement, renderTask, sameObject } from "./logic.js";
 import { saveLocalStorage, deleteItem, editItem, saveProject } from "./storage.js";
 /* Code with Task */
 //function that activates modal window
@@ -145,11 +145,12 @@ const editTask = (form, element, task) => {
 
 const loadModal = (form, element) => {
   let actualTask = findElement(element)
-  const { title, dueDate, description, priority } = form;
+  const { title, dueDate, description, priority ,project} = form;
   title.value = actualTask[0].title;
   dueDate.value = actualTask[0].dueDate;
   description.value = actualTask[0].description;
   priority.value = actualTask[0].priority;
+  project.value = actualTask[0].project
 };
 const dataTransfer = (element) => {
   
@@ -168,11 +169,32 @@ const showOpt = (e) => {
 
 document.querySelector(".add__project").addEventListener("click", showOpt);
 
+const insertProject = (value) => {
+    const div = document.createElement("div"),
+    sectionProjects = document.querySelector(".projects"),
+    selectProject = document.querySelector(".select__project"),
+    selectEdit = document.getElementById("edit__select"),
+    option = document.createElement("option");
+
+    option.innerText = value;
+    option.setAttribute("value",value);
+    selectProject.appendChild(option);
+
+    const cloneOption = option.cloneNode(true);
+    selectEdit.appendChild(cloneOption)
+    div.innerText = value;
+    div.classList.add("project");
+    div.setAttribute("data-value",value)
+    sectionProjects.appendChild(div);
+
+}
+
+
 const addProject = (e) => {
   const element = e.currentTarget,
     input = document.getElementById("name").value,
     sectionProjects = document.querySelector(".projects"),
-    p = document.createElement("p"),
+    div = document.createElement("div"),
     selectProject = document.querySelector(".select__project"),
     selectEdit = document.getElementById("edit__select"),
     option = document.createElement("option");
@@ -186,14 +208,16 @@ const addProject = (e) => {
   selectEdit.appendChild(opt);
 
   //agregamos el project a la seccion de proyectos 
-  p.innerText = input;
-  p.classList.add("project");
-  sectionProjects.appendChild(p);
+  div.innerText = input;
+  div.classList.add("project");
+  div.setAttribute("data-value",input)
+  sectionProjects.appendChild(div);
   saveProject(input)
 
 
   element.parentElement.classList.add("display__none");
   document.querySelector(".add__project").classList.remove("display__none");
+  renderTask();
 };
 
 document.querySelector("#btn__add").addEventListener("click", addProject);
@@ -205,4 +229,5 @@ export {
   showProperties,
   clickEdit,
   insertTask,
+  insertProject
 };
