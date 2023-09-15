@@ -44,6 +44,8 @@ const findElement = (element) => {
 };
 
 const showTasks = (e) => {
+  if(e.target.matches(".minus"))return
+  
   const storage = loadStorage(),
     projectClicked = e.target.dataset.value,
     sectionTasks = document.querySelector(".tasks");
