@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./../src/normalize.css" />
-    <link rel="stylesheet" href="../src/hamburgers.css" />
+    <link rel="stylesheet" href="./../src/normalize.css" type="text/html" />
+    <link rel="stylesheet" href="../src/hamburgers.css" type="text/html" />
     <script
       src="https://kit.fontawesome.com/b94ace870d.js"
       crossorigin="anonymous"
@@ -13,9 +13,14 @@
   </head>
   <body>
     <header>
+      <button class="hamburger hamburger--vortex is-active" type="button">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
       <div class="logo">
         <h1>To-do Check</h1>
-        <i class="fa-solid fa-clipboard-list fa-xl"></i>
+        <i class="fa-solid fa-clipboard-list fa-2xl"></i>
       </div>
     </header>
     <main>
@@ -27,10 +32,10 @@
             <input type="text" name="title" id="title" />
             <label for="date">Due Date</label>
             <input type="date" name="dueDate" id="dueDate" />
-            <label for="descripion">Description</label>
+            <label for="description">Description</label>
             <textarea
               name="description"
-              id="descripion"
+              id="description"
               cols="6"
               rows="1"
             ></textarea>
@@ -76,8 +81,8 @@
           </form>
         </dialog>
       </article>
-      <article class="window__projects">
-        <h2>Projects</h2>
+      <article class="window__projects open">
+        <h2 class="title__projects">Projects</h2>
         <button
           class="add__project"
           type="button"
@@ -91,17 +96,15 @@
           <button type="button" id="btn__add" name="btn__add">Add</button>
           <button type="button" id="btn__cancel" name="cancel">Cancel</button>
         </div>
-        <div class="projects"></div>
-      </article>
-      <article class="tasks">
-        <div class="hamburger hamburger--collapse">
-          <div class="hamburger-box">
-            <div class="hamburger-inner"></div>
-          </div>
+        <div class="projects">
+          <h3>Total Projects</h3>
         </div>
-
-        <button type="button" id="addTask" name="addTask">+</button>
       </article>
+      <div class="section__task">
+        <button type="button" id="addTask" name="addTask">+</button>
+        <article class="tasks">
+        </article>
+      </div>
     </main>
     <footer>
       <p class="">Design by Brandon Luna 2023</p>
