@@ -1,4 +1,4 @@
-import Task, { findElement, renderTask, sameObject } from "./logic.js";
+import Task, { findElement, renderTask } from "./logic.js";
 import {
   saveLocalStorage,
   deleteItem,
@@ -6,6 +6,17 @@ import {
   saveProject,
   deleteStorageProject,
 } from "./storage.js";
+
+const openWindow = () => {
+  const btnWindow = document.querySelector(".hamburger")
+
+  btnWindow.addEventListener("click",e => {
+    e.currentTarget.classList.toggle("is-active")
+    document.querySelector(".window__projects").classList.toggle("open")
+
+  })
+
+}
 /* Code with Task */
 //function that activates modal window
 const openModal = (e) => {
@@ -87,10 +98,10 @@ function insertTask(data, flag = false) {
           </div>
         </div>
         <div class="more__info display__none">
-          <span class="info__title"><b>Title:</b>${title}</span>
-          <span class="info__date"><b>Due Date:</b>${dueDate}</span>
-          <span class="info__description"><b>Description:</b>${description}</span>
-          <span class="info__priority"><b>Priority:</b>${priority}</span>
+          <span class="info__title"><b>Title: </b>${title}</span>
+          <span class="info__date"><b>Due Date: </b>${dueDate}</span>
+          <span class="info__description"><b>Description: </b>${description}</span>
+          <span class="info__priority"><b>Priority: </b>${priority}</span>
         </div>
       </div>
   `;
@@ -187,19 +198,19 @@ document.querySelector(".add__project").addEventListener("click", showOpt);
 
 const deleteProject = (e) => {
   const div = e.target.closest(".project"),
-  optionsElement = document.querySelectorAll(`[data-option=${div.dataset.value}]`)
-  
+    optionsElement = document.querySelectorAll(
+      `[data-option=${div.dataset.value}]`
+    );
+
   div.remove();
-  optionsElement.forEach(option => option.remove());
+  optionsElement.forEach((option) => option.remove());
   deleteStorageProject(div);
-}
+};
 
 const clickMinus = () => {
-  const minusICon = document.querySelectorAll(".minus")
-  minusICon.forEach((icon) => icon.addEventListener("click",deleteProject))
-
-}
-
+  const minusICon = document.querySelectorAll(".minus");
+  minusICon.forEach((icon) => icon.addEventListener("click", deleteProject));
+};
 
 const insertProject = (value) => {
   const div = document.createElement("div"),
@@ -209,22 +220,20 @@ const insertProject = (value) => {
     icon = document.createElement("i"),
     option = document.createElement("option");
 
-  icon.className = "minus fa-solid fa-minus";  
+  icon.className = "minus fa-solid fa-minus";
   option.innerText = value;
   option.setAttribute("value", value);
-  option.setAttribute("data-option",value)
+  option.setAttribute("data-option", value);
   selectProject.appendChild(option);
 
   const cloneOption = option.cloneNode(true);
   selectEdit.appendChild(cloneOption);
- 
 
   div.innerText = value;
   div.classList.add("project");
   div.setAttribute("data-value", value);
-  div.appendChild(icon)
+  div.appendChild(icon);
   sectionProjects.appendChild(div);
-  
 };
 
 const cancelAdd = (e) => {
@@ -234,7 +243,6 @@ const cancelAdd = (e) => {
 };
 
 const addProject = (e) => {
-
   const element = e.target,
     input = document.getElementById("name"),
     sectionProjects = document.querySelector(".projects"),
@@ -248,17 +256,17 @@ const addProject = (e) => {
 
   option.innerText = input.value;
   option.setAttribute("value", input.value);
-  option.setAttribute("data-option",input.value)
+  option.setAttribute("data-option", input.value);
   selectProject.appendChild(option);
 
   //clone node and add option HTML element to correctly select
   const opt = option.cloneNode(true);
   selectEdit.appendChild(opt);
-  //add project to section  
+  //add project to section
   div.innerText = input.value;
   div.classList.add("project");
   div.setAttribute("data-value", input.value);
-  div.appendChild(icon)
+  div.appendChild(icon);
   sectionProjects.appendChild(div);
   saveProject(input.value);
 
@@ -266,7 +274,7 @@ const addProject = (e) => {
   document.querySelector(".add__project").classList.remove("display__none");
   input.value = "";
   renderTask();
-  clickMinus()
+  clickMinus();
 };
 
 document
@@ -284,5 +292,6 @@ export {
   clickEdit,
   insertTask,
   insertProject,
-  clickMinus
+  clickMinus,
+  openWindow
 };
