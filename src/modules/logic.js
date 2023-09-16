@@ -63,7 +63,7 @@ const showTasks = (e) => {
 
   if (filterTask.length == 0) {
     return (sectionTasks.innerHTML = `
-      <div class='error'>No se encuentran tareas asociadas a este proyecto</div>
+      <div class='error'>Not found tasks associated this project</div>
     `);
   }
   if (filterTask.length > 1) {
