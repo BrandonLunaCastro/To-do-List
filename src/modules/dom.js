@@ -1,3 +1,4 @@
+
 import Task, { findElement, renderTask } from "./logic.js";
 import {
   saveLocalStorage,
@@ -6,6 +7,8 @@ import {
   saveProject,
   deleteStorageProject,
 } from "./storage.js";
+import { format } from 'date-fns'
+
 
 const openWindow = () => {
   const btnWindow = document.querySelector(".hamburger")
@@ -83,6 +86,8 @@ function insertTask(data, flag = false) {
   const sectionTasks = document.querySelector(".tasks"),
     figure = document.createElement("figure"),
     fragment = document.createDocumentFragment();
+  console.log(format(new Date(dueDate),' MMM do yyyy'))
+ dueDate = format(new Date(dueDate),' MMM do yyyy')
 
   figure.classList.add("task");
   figure.setAttribute("data-id", id);
