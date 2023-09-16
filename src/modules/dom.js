@@ -115,7 +115,18 @@ function insertTask(data, flag = false) {
     showProperties();
     clickEdit();
     clickBtnDelete();
+    detectCheckTask()
   }
+}
+
+const changeStatus = (e) => {
+  const check = e.target 
+  check.nextElementSibling.classList.toggle("checked")
+} 
+
+function detectCheckTask(){
+  const allCheckbox = document.querySelectorAll("#checkbox")
+  allCheckbox.forEach(check => check.addEventListener("input",changeStatus))
 }
 
 const showMore = (e) => {
@@ -148,6 +159,7 @@ const replaceTask = (task, element) => {
   showProperties();
   clickEdit();
   clickBtnDelete();
+  detectCheckTask()
 };
 
 const editTask = (form, element, task) => {
