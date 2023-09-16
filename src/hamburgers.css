@@ -7,7 +7,6 @@
  */
 .hamburger {
   padding: 15px 15px;
-  
   display: inline-block;
   cursor: pointer;
   transition-property: opacity, filter;
@@ -27,7 +26,9 @@
   .hamburger.is-active .hamburger-inner,
   .hamburger.is-active .hamburger-inner::before,
   .hamburger.is-active .hamburger-inner::after {
-    background-color: #000; }
+    background-color: #eee;
+    
+  }
 
 .hamburger-box {
   width: 40px;
@@ -38,13 +39,11 @@
 .hamburger-inner {
   display: block;
   top: 50%;
-  
   margin-top: -2px; }
   .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
     width: 40px;
-  
     height: 4px;
-    background-color: #000;
+    background-color: #eeee;
     border-radius: 4px;
     position: absolute;
     transition-property: transform;
